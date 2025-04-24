@@ -1,0 +1,27 @@
+.page-layout {
+    padding: 1rem;
+  }  
+  .card {
+    margin-top: 1rem;
+  }
+  button.p-button {
+    margin: 0 5px; /* Add spacing between buttons */
+    padding: 8px 12px; /* Adjust padding for better appearance */
+  }
+  
+  /* Styling for button icons and text */
+  button.p-button .pi {
+    margin-right: 5px; /* Adds space between icon and text */
+  }
+  
+  /* Add hover effect */
+  button.p-button:hover {
+    background-color: #007bff; /* Light blue background on hover */
+    color: white; /* White text when hovered */
+  }
+  
+  /* Optional: Add focus style for better accessibility */
+  button.p-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* Blue border on focus */
+  }

@@ -1,0 +1,289 @@
+<p-toast position="bottom-right"></p-toast>
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+  <form [formGroup]="form">
+    <div
+      class="field"
+      style="flex: 1; border: 1px solid #ccc; padding: 10px; border-radius: 5px"
+    >
+    <div class="field col-12 xl:col-6">
+      <div style="position: relative">
+        <img
+          src="assets/images/logout.jpg"
+          (click)="logout()"
+          alt="logout"
+          style="height:30px; position: absolute; top: 5px; right: 10px; cursor: pointer"
+        />
+      </div>
+      
+    </div>
+    <div class="p-fluid formgrid grid align-items-center">
+      <div class="field col-12 xl:col-6">
+        <h1 style="font-size: 20px">Mini Loan System Management</h1>
+      </div>
+      
+      @if(role != 'Admin'){
+      <div class="field col-12 xl:col-6">
+        <div class="flex justify-content-end">
+          <p-button
+            icon="pi pi-plus"
+            (click)="onAddClick($event)"
+            label="ADD LOAN DETAILS"
+          ></p-button>
+        </div>
+      </div>
+      }
+    </div>
+      &nbsp;
+      <div
+      class="field"
+      style="flex: 1; border: 1px solid #ccc; padding: 10px; border-radius: 5px"
+    >
+      <div class="card">
+        <p-table
+          [value]="loanList"
+          [rows]="10"
+          [rowsPerPageOptions]="[5, 10, 15, 20, 50]"
+          [paginator]="true"
+          [scrollable]="true"
+          [scrollHeight]="innerHeight + 'px'"
+          scrollWidth="innerWidth"
+          [(first)]="index"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 100px">Id</th>
+              <th style="min-width: 100px">Loan Amount</th>
+              <th style="min-width: 100px">Loan Term Months</th>
+              <th style="min-width: 100px">Loan Purpose</th>
+              <th style="min-width: 100px">Status</th>
+              <th style="min-width: 100px">Action​</th>
+              <th style="min-width: 100px">View EMI</th>
+            </tr>
+          </ng-template>
+          <ng-template let-data pTemplate="body" let-product let-ri="rowIndex">
+            <ng-container *ngIf="loanList.length > 0">
+              <tr [pEditableRow]="data">
+                <td>{{ data?.id }}</td>
+                <td>{{ data?.loanAmount }}</td>
+                <td>{{ data?.loanTermMonths }}</td>
+                <td>{{ data?.loanPurpose }}</td>
+                <td>{{ data?.status }}</td>
+                <td>
+                  <!-- Add and Update Buttons -->
+                   @if(role == 'Borrower' && (data?.status !== 'Approved' && data?.status !== 'Rejected')){
+                  <button
+                    pButton
+                    type="button"
+                    icon="pi pi-pencil"
+                    label="EDIT"
+                    (click)="view(product)"
+                  ></button>
+                   }@if(role == 'Admin') {
+                    <ng-container>                       
+                          <p-button
+                            icon="pi pi-thumbs-up"
+                            label="APPROVE"
+                            (click)="onSubmit(product, 'Approved')"
+                          >
+                          </p-button>                        
+                        &nbsp;&nbsp;
+                          <p-button
+                            icon="pi pi-thumbs-down"
+                            label="REJECT"
+                            (click)="onSubmit(product, 'Rejected')"
+                          >
+                          </p-button>
+                        
+                      </ng-container>
+                   }
+                  <!-- <button pButton type="button" icon="pi pi-plus" label="ADD"  (click)="onAddClick($event)"></button> -->
+                </td>
+                <td>
+                  @if(role == 'Admin' || data?.status == 'Approved'){
+                    <p-button
+                            icon="pi pi-thumbs-down"
+                            label="View Repayment Schedule"  
+                            (click)="repaymentSchedule(product)"                         
+                          >
+                          </p-button>
+                        }
+                </td>
+              </tr>
+            </ng-container>
+          </ng-template>
+        </p-table>
+        @if(loanList.length === 0) {
+        <ng-container>
+          <div class="card flex justify-content-center">No data found</div>
+        </ng-container>
+        }
+      </div>
+    </div>
+    </div>
+
+    <p-dialog
+      header="Added Loan Details"
+      [(visible)]="isShowPopup"
+      [modal]="true"
+      [closable]="false"
+      [style]="{ width: '50vw', height: 'auto' }"
+    >
+    <div class="card">
+        <div class="p-fluid grid">
+          <!-- Loan Amount -->
+          <div class="field col-12 md:col-12">
+            <label for="loanAmount" class="control-label">
+              Loan Amount<span style="color: red">*</span>
+            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input
+              type="text"
+              placeholder="Enter Loan Amount"
+              formControlName="loanAmount"
+              minlength="2"
+              maxlength="15"
+              (keypress)="omit_decimal_char($event)"
+              (input)="restrictDecimalInputCustomer($event, 'loanAmount')"
+              pInputText
+              class="w-full"
+            />
+          </div>
+          &nbsp;&nbsp;
+          <!-- Loan Term Months -->
+          <div class="field col-12 md:col-12">
+            <label for="loanTermMonths" class="control-label">
+              Loan Term Months<span style="color: red">*</span>
+            </label>&nbsp;&nbsp;
+            <input
+              type="text"
+              placeholder="Enter Loan Term Months"
+              formControlName="loanTermMonths"
+              minlength="1"
+              maxlength="5"
+              (keypress)="omit_numeric_chars($event)"
+              pInputText
+              class="w-full"
+            />
+          </div>
+          &nbsp;&nbsp;
+          <!-- Loan Purpose -->
+          <div class="field col-12 md:col-12">
+            <label for="loanPurpose" class="control-label">
+              Loan Purpose<span style="color: red">*</span>
+            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input
+              type="text"
+              app-restrict-input="decimal"
+              placeholder="Enter Loan Purpose"
+              formControlName="loanPurpose"
+              minlength="2"
+              maxlength="50"
+              pInputText
+              class="w-full"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12 xl:col-12">
+            <div style="display: flex; justify-content: flex-end">
+                
+              <ng-container>
+                @if(btnUpdate == 'SAVE')
+                {
+                <div class="flex ml-4 align-items-center">
+                  <p-button icon="pi pi-check" label="SAVE" (click)="onSaveClick($event, 'Pending')"> </p-button>
+                </div>
+                &nbsp;&nbsp;
+                }
+                @if(btnUpdate == 'EDIT')
+                {
+                <div class="flex ml-4 align-items-center">
+                    <p-button icon="pi pi-check" label="UPDATE" (click)="onUpdateClick($event, 'Pending')"> </p-button>
+                  </div>
+                  &nbsp;&nbsp;
+                }
+                <div class="flex ml-4 align-items-center">
+                  <p-button icon="pi pi-times" label="CANCEL" (click)="onCancelClick()" > </p-button>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-dialog>
+
+    <p-dialog [(visible)]="isAppReject" header="Confirm" [modal]="true" [style]="{ width: '450px' }" [closable]="false">
+        <div class="flex align-items-center justify-content-center">
+          <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+          <span>Are you sure you want to 
+            <strong>{{ status == 'Rejected' ? 'Reject' : status == 'Approved' ? 'Approve' : status?.toLowerCase() }}</strong> 
+            this loan?
+          </span>
+        </div>
+        <ng-template pTemplate="footer">
+          <button
+            pButton
+            pRipple
+            icon="pi pi-times"
+            class="p-button-text"
+            label="No"
+            (click)="isAppReject = false"
+          ></button>
+          <button
+            pButton
+            pRipple
+            icon="pi pi-check"
+            class="p-button-text"
+            label="Yes"
+            (click)="confirmAppReject()"
+          ></button>
+        </ng-template>
+      </p-dialog>
+
+      <p-dialog [(visible)]="isRepaymentSchedule" header="Confirm" [modal]="true" [style]="{ width: '700px' }" [closable]="true"
+      header="Repayment Schedule">
+      <div class="card">
+        <p-table
+          [value]="RepaymentScheduleList"
+          [rows]="10"
+          [rowsPerPageOptions]="[5, 10, 15, 20, 50]"
+          [paginator]="true"
+          [scrollable]="true"
+          [scrollHeight]="innerHeight + 'px'"
+          scrollWidth="innerWidth"
+          [(first)]="index1"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="min-width: 100px">Loan Term Months</th>
+              <th style="min-width: 100px">Principal</th>
+              <th style="min-width: 100px">Interest</th>
+              <th style="min-width: 100px">Total Payment</th>
+              <th style="min-width: 100px">Due Date</th>              
+            </tr>
+          </ng-template>
+          <ng-template let-data pTemplate="body" let-product let-ri="rowIndex">
+            <ng-container *ngIf="RepaymentScheduleList.length > 0">
+              <tr [pEditableRow]="data">
+                <td>{{ data?.tenure }}</td>
+                <td>{{ data?.principal }}</td>
+                <td>{{ data?.interest }}</td>
+                <td>{{ data?.totalPayment }}</td>
+                <td>{{ data?.dueDate | date: 'dd/MM/yyyy' }}</td>
+                
+              </tr>
+            </ng-container>
+          </ng-template>
+        </p-table>
+        @if(RepaymentScheduleList.length === 0) {
+        <ng-container>
+          <div class="card flex justify-content-center">No data found</div>
+        </ng-container>
+        }
+      </div>
+        
+      </p-dialog>
+  </form>
+</div>

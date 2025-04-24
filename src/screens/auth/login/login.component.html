@@ -1,0 +1,176 @@
+<!-- <p-toast></p-toast> -->
+<div class="container">
+  <div
+    class="card smallscreen"
+    style="padding-top: 4px; padding-bottom: 4px; margin-bottom: 5px"
+  >
+    <div class="row loginBox" [style.height]="innerHeight">
+      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 contentBox">
+        <div
+          class="topimg"
+          style="
+            display: flex;
+            justify-content: space-around;
+            padding-top: 15px;
+            align-items: baseline;
+          "
+        >
+          <!-- <img src="images/D2KLogo.jpg" alt="" style="height: 90px;"> -->
+        </div>
+        <div class="img" style="text-align: center">
+          <img
+            src="/assets/logos/login.png"
+            alt=""
+            style="width: 50%; height: auto"
+          />
+          <div
+            class="textFont"
+            style="padding-top: 20px; color: #06704a; font-weight: 600"
+          >
+            <!-- <p *ngIf="!isPublic">
+                            Portal for <br> ElectroNic SUbmission of REturns
+                        </p> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 contentBox">
+        <div class="ensureLogo" style="text-align: center">
+          <img                   
+          src="assets/logos/d2k-logo.png"
+            alt=""
+            style="height: 100px; width: 50%"
+          />
+        </div>
+        <div>
+          <form
+            class="container"
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+            [style]="{
+              width: isSmallScreen ? '90%' : '50%',
+              margin: '0 auto',
+              padding: '20px',
+              height: isSmallScreen ? '650px' : '100%',
+            }"
+          >
+            <div class="grid p-2 lg:p-0 justify-content-center">
+              <div class="col-12 xl:col-12" style="width: 80%">
+                <div class="loginContainer">
+                  <div class="h-full w-full m-0 py-5 px-4">
+                    <label
+                      for="username"
+                      class="block text-900 text-xl font-medium mb-3"
+                    >
+                      Username
+                    </label>
+                    <input
+                      id="username"
+                      type="text"
+                      placeholder="Username"
+                      pInputText
+                      class="w-full mb-4"
+                      maxlength="30"
+                      style="padding: 0.7rem"
+                      autocomplete="off"
+                      formControlName="username"
+                      [ngClass]="{
+                        'is-invalid': submitted && f['username'].errors,
+                      }"
+                    />
+
+                    <!-- <div
+                      *ngIf="submitted && f.username.errors"
+                      style="color: red"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.username.errors.required">User name is required</div>
+                    </div> -->
+                    <div
+                      style="
+                        display: flex;
+                        align-items: baseline;
+                        justify-content: space-between;
+                      "
+                    >
+                      <label
+                        for="password"
+                        class="block text-900 font-medium text-xl mb-2"
+                        >Password
+                      </label>
+                    </div>
+
+                    <!-- <input
+                      id="username"
+                      type="password"
+                      [toggleMask]="true"
+                      placeholder="Password"
+                      pInputText
+                      maxlength="15"
+                      class="w-full mb-3"
+                      style="padding: 0.7rem"
+                      autocomplete="off"
+                      formControlName="password"
+                      [ngClass]="{
+                        'is-invalid': submitted && f['password'].errors,
+                      }"
+                    /> -->
+                    <p-password
+                      formControlName="password"
+                      [toggleMask]="true"
+                      [feedback]="false"
+                      [inputStyle]="{ padding: '0.7rem' }"
+                      styleClass="w-full mb-3"
+                      maxlength="15"
+                      autocomplete="off"
+                    ></p-password>
+
+                    <!-- <div
+                      *ngIf="submitted && f['password'].errors"
+                      style="color: red"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f['password'].errors?.required">Password is required</div>
+                      <div *ngIf="f['password'].errors?.minlength">
+                        Password must be at least 6 characters
+                      </div>
+                      <div *ngIf="f['password'].touched">
+                        1 upper case letter, and 1 special character
+                      </div>
+                    </div> -->
+
+                    <div
+                      class="flex align-items-center justify-content-between mb-5"
+                    >
+                      <div class="flex align-items-center"></div>
+                    </div>
+                    <br />
+                    <div
+                      class="invalid-feedback"
+                      style="color: red"
+                      *ngIf="ErrorMessage"
+                    >
+                      {{ ErrorMessage }}
+                      &nbsp;
+                    </div>
+                    <button
+                      pButton
+                      pRipple
+                      class="w-full p-3 text-xl"
+                      type="submit"
+                      style="background-color: #06704a"
+                      
+                    >
+                      Sign In
+                    </button>
+                    <br />
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

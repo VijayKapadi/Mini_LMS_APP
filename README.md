@@ -1,4 +1,4 @@
-# Mini_LMS_APP
+
 # Mini Loan Management System
 
 This repository contains frontend projects of Mini_LMS_APP product, which is developed using Angular 19.X version.

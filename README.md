@@ -12,4 +12,8 @@ Development Setup:
 # this will run app: Mini_LMS_APP
   # npm run start
 
+# Login Credentials 
+1. User ID: Admin  and Password: miswak365, Role: Admin
+2. User ID: Vijay  and Password: miswak365, Role: Borrower
+3. User ID: Borrower and Password: miswak365, Role: Borrower
 

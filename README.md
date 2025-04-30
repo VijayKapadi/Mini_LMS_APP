@@ -6,10 +6,10 @@ This repository contains frontend projects of Mini_LMS_APP product, which is dev
 Development Setup:
 1. Go to project root directory
 2. Install dependencies using npm
-   npm install
+  # npm install
 
 3. Serve application using development server
 # this will run default app: Mini_LMS_APP
-   npm run start
+  # npm run start
 
 

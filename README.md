@@ -8,7 +8,7 @@ Development Setup:
 2. Install dependencies using npm
    npm install
 
-4. Serve application using development server
+3. Serve application using development server
 # this will run default app: Mini_LMS_APP
    npm run start
 

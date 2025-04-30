@@ -9,7 +9,7 @@ Development Setup:
   # npm install
 
 3. Serve application using development server
-# this will run default app: Mini_LMS_APP
+# this will run app: Mini_LMS_APP
   # npm run start
 
 
